@@ -1,8 +1,7 @@
 services:
   - type: web
     name: raft-ocean-survivors
-    runtime: node
+    runtime: docker
+    dockerfilePath: ./Dockerfile
     plan: free
-    buildCommand: npm install
-    startCommand: npm start
     healthCheckPath: /healthz

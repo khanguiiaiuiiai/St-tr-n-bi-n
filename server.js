@@ -5,7 +5,7 @@ const { WebSocketServer } = require('ws');
 const PORT = process.env.PORT || 3000;
 const DATA = process.env.DATA_DIR || path.join(__dirname, 'data');
 const FILE = path.join(DATA, 'maps.json');
-const INDEX = path.join(__dirname, 'public', 'index.html');
+const INDEX = [path.join(__dirname, 'index.html'), path.join(__dirname, 'public', 'index.html')].find(f => fs.existsSync(f)) || path.join(__dirname, 'index.html');
 
 // ---------- lưu map (RAM + ghi file) ----------
 let maps = {};
@@ -62,7 +62,7 @@ const server = http.createServer((req, res) => {
 
   if (u.pathname === '/' || u.pathname === '/index.html') {
     return fs.readFile(INDEX, (e, buf) => {
-      if (e) { res.writeHead(500); return res.end('Thiếu public/index.html'); }
+      if (e) { res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' }); return res.end('Thieu file index.html canh server.js trong repo'); }
       res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-cache' });
       res.end(buf);
     });
